@@ -7,23 +7,23 @@
 2. This configuration assumes that dynamic nfs subdirectory is already in place
 
 ```sh
-$ kubectl apply -f pvc.yaml
+kubectl apply -f pvc.yaml
 ```
 
 3. This configuration assumes that cert manager is already installed
 
 ```sh
-$ kubectl apply -f certificate.yaml
+kubectl apply -f certificate.yaml
 ```
 
 4. Apply deployment
 
 ```sh
-$ kubectl apply -f deployment.yaml
+kubectl apply -f deployment.yaml
 ```
 
 5. Apply service
 
 ```sh
-$ kubectl apply -f service.yaml
+kubectl apply -f service.yaml
 ```
