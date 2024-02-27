@@ -1,0 +1,54 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: prosody
+spec:
+  dnsNames:
+    - chat.example.com
+  secretName: prosody-tls
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+
+---
+
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: prosody-conference
+spec:
+  dnsNames:
+    - conference.chat.example.com
+  secretName: prosody-conference-tls
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+
+---
+
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: prosody-proxy
+spec:
+  dnsNames:
+    - proxy.chat.example.com
+  secretName: prosody-proxy-tls
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+
+---
+
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: prosody-upload
+spec:
+  dnsNames:
+    - upload.chat.example.com
+  secretName: prosody-upload-tls
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+

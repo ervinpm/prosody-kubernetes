@@ -1,0 +1,92 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: prosody 
+  namespace: default
+  labels:
+    app: prosody 
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: prosody 
+  template:
+    metadata:
+      labels:
+        app: prosody
+    spec:
+      containers:
+      - name: prosody 
+        image: sarasmiseth/prosody
+        imagePullPolicy: Always
+        securityContext:
+          runAsUser: 999
+          runAsGroup: 999
+        env:
+        - name: DOMAIN
+          value: chat.example.com
+        - name: ALLOW_REGISTRATION
+          value: "false"
+        ports:
+        - containerPort: 5000
+          name: file-share
+        - containerPort: 5222
+          name: client-server
+        - containerPort: 5223
+          name: cs-legacy
+        - containerPort: 5269
+          name: server-server
+        - containerPort: 5347
+          name: xmpp
+        - containerPort: 5280
+          name: bosh
+        - containerPort: 5281
+          name: secure-bosh
+        volumeMounts:
+        - name: prosody-data
+          mountPath: /usr/local/var/lib/prosody
+        - name: tls-certs
+          mountPath: /usr/local/etc/prosody/certs/chat.example.com
+        - name: conference-tls-certs
+          mountPath: /usr/local/etc/prosody/certs/conference.chat.example.com
+        - name: proxy-tls-certs
+          mountPath: /usr/local/etc/prosody/certs/proxy.chat.example.com
+        - name: upload-tls-certs
+          mountPath: /usr/local/etc/prosody/certs/upload.chat.example.com
+      volumes:
+      - name: prosody-data
+        persistentVolumeClaim:
+          claimName: prosody-data 
+      - name: tls-certs
+        secret:
+          secretName: prosody-tls
+          items:
+          - key: tls.crt
+            path: fullchain.pem
+          - key: tls.key
+            path: privkey.pem
+      - name: conference-tls-certs
+        secret:
+          secretName: prosody-conference-tls
+          items:
+          - key: tls.crt
+            path: fullchain.pem
+          - key: tls.key
+            path: privkey.pem
+      - name: proxy-tls-certs
+        secret:
+          secretName: prosody-proxy-tls
+          items:
+          - key: tls.crt
+            path: fullchain.pem
+          - key: tls.key
+            path: privkey.pem
+      - name: upload-tls-certs
+        secret:
+          secretName: prosody-upload-tls
+          items:
+          - key: tls.crt
+            path: fullchain.pem
+          - key: tls.key
+            path: privkey.pem
